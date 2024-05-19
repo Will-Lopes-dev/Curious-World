@@ -8,8 +8,20 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'initial',
     pathMatch: 'full'
+  },
+  {
+    path: 'country-modal',
+    loadChildren: () => import('./country-modal/country-modal.module').then( m => m.CountryModalPageModule)
+  },
+  {
+    path: 'teste',
+    loadChildren: () => import('./teste/teste.module').then( m => m.TestePageModule)
+  },
+  {
+    path: 'initial',
+    loadChildren: () => import('./initial/initial.module').then( m => m.InitialPageModule)
   },
 ];
 

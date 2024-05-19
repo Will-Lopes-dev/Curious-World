@@ -25,3 +25,25 @@
 #container a {
   text-decoration: none;
 }
+
+.ion-text-center {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.flexbox_center { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*Variáveis de Estilo Ionic*/ 
+ion-card[card-home] {
+  max-width: 400px; /* Defina o máximo de largura para os cartões */
+  margin: 20px auto; /* Centralize os cartões na tela */
+  box-shadow: 1px 1px 8px #2e2d2d;
+}
+
+ion-card-header[title_flag] {
+  background-color: #ececec;
+}

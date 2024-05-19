@@ -1,0 +1,66 @@
+<!-- country-modal.page.html -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes do País</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-text-center">
+    <img [src]="country.flags[0]" alt="Bandeira do {{ country.name.common }}" style="max-width: 100px;">
+    <h2>{{ country.translations.por.official }}</h2>
+  </div>
+  
+  <ion-list>
+    <ion-item>
+      <ion-label>Continente</ion-label>
+      <ion-text>{{ country.continents[0] }}</ion-text>
+    </ion-item> 
+    
+    <ion-item>
+      <ion-label>Sub-região</ion-label>
+      <ion-text>{{ country.subregion }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Fuso horário</ion-label>
+      <ion-text>{{ country.timezones }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Capital</ion-label>
+      <ion-text>{{ country.capital[0] }}</ion-text>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-label>Idioma</ion-label>
+      <ion-text>{{ country.languages }}</ion-text>
+    </ion-item> -->
+
+    <ion-item *ngIf="getFirstCurrency(country)">
+      <ion-label>Moeda</ion-label>
+      <ion-text>
+        {{ country.firstCurrency.name }} ({{ country.firstCurrency.symbol }})
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Área</ion-label>
+      <ion-text>{{ country.area }} km²</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <a target="_blank" [href]="safeGoogleMapsUrl">Abrir google maps</a>
+    </ion-item>
+  
+    <ion-item class="ion-text-center">
+      <a target="_blank" [href]="safeOpenStreetMapsUrl">Abrir OpenStreetMap</a> 
+    </ion-item>
+  </ion-list>
+</ion-content>
