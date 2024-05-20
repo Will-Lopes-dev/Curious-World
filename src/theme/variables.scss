@@ -1,2 +1,8 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+@media (prefers-colors-scheme: medium) {
+    body {
+        --ion-color-medium-tint: #d8d8d8;
+    } 
+}
