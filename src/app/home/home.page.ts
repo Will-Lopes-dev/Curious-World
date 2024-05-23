@@ -62,7 +62,7 @@ export class HomePage {
       });
     } else {
       this.countries = [];
-      this.allCountries;
+      this.countries = this.allCountries;
     }
   }
   
