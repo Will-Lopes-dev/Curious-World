@@ -16,9 +16,6 @@ export class HomePage {
   firstCurrencies: { countryName: string, name: string, symbol: string }[] = [];
   batchSize: number = 10;
   startIndex: number = 0;
-  filteredCountries: any[] = [];
-
-
 
   nomeUsuario: string = 'Nome do Usuário'; // Substitua pelo nome do usuário logado
 
@@ -44,9 +41,9 @@ export class HomePage {
               country.firstCurrency = firstCurrency;
             }
           });
-          this.allCountries = this.allCountries.concat(data);
+          this.allCountries = data;
+          this.countries = this.allCountries;
           this.startIndex += this.batchSize; 
-          console.log(this.allCountries);
         }
       },
       error: (error: any) => {
@@ -57,16 +54,17 @@ export class HomePage {
 
   filterCountries(event: any) {
     const searchTerm = event.target.value.toLowerCase().trim();
+    this.countries = []
+  
     if (searchTerm) {
       this.countries = this.allCountries.filter(country => {
         return country.translations.por.common.toLowerCase().startsWith(searchTerm);
       });
     } else {
-      this.countries= [];
-      this.countries = this.allCountries.slice(0, this.startIndex);
+      this.countries = [];
+      this.loadCountries(); 
     }
   }
-
   
   onScroll(event: any) {
     const scrollElement = event.target;
