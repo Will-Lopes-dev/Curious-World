@@ -12,7 +12,7 @@ import { CountryModalPage } from '../country-modal/country-modal.page';
 })
 export class HomePage {
   countries: any[] = [];
-  allCountries: any;
+  allCountries: any[] = [];
   firstCurrencies: { countryName: string, name: string, symbol: string }[] = [];
   batchSize: number = 10;
   startIndex: number = 0;
@@ -44,9 +44,9 @@ export class HomePage {
               country.firstCurrency = firstCurrency;
             }
           });
-          this.countries = this.countries.concat(data);
+          this.allCountries = this.allCountries.concat(data);
           this.startIndex += this.batchSize; 
-          console.log(this.countries);
+          console.log(this.allCountries);
         }
       },
       error: (error: any) => {
@@ -55,17 +55,16 @@ export class HomePage {
     });
   }
 
-  filterCountries(event:any){
-    // let searchTerm = event.target.value.toLowerCase().trim();
-
-    // if (searchTerm) {
-    //   // this.countries = this.allCountries;
-    //   this.countries = this.countries.filter(country => {
-    //     return (country.translations.por.common.toLowerCase().startsWith(searchTerm))
-    //   })
-    // } else {
-    //   this.countries = this.allCountries;
-    // }
+  filterCountries(event: any) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+    if (searchTerm) {
+      this.countries = this.allCountries.filter(country => {
+        return country.translations.por.common.toLowerCase().startsWith(searchTerm);
+      });
+    } else {
+      this.countries= [];
+      this.countries = this.allCountries.slice(0, this.startIndex);
+    }
   }
 
   

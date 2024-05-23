@@ -21,7 +21,7 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col>
-        <ion-card card-home *ngFor="let country of countries" (click)="openCountryModal(country)">
+        <ion-card card-home *ngFor="let country of allCountries" (click)="openCountryModal(country)">
           <img [src]="country.flags[0]" alt="Bandeira do {{ country.name.common }}">
           <ion-card-header title_flag>
             <ion-card-title>{{ country.translations.por.common }}</ion-card-title>
