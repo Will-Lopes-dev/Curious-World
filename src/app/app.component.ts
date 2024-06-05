@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from './service/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private auth: AuthService) {}
+
+
+  logout() {
+    this.auth.logout();
+  }
 }

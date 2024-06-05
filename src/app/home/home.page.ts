@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { CountryModalPage } from '../country-modal/country-modal.page';
-// import _ from 'lodash';
 
 
 @Component({
@@ -16,9 +15,6 @@ export class HomePage {
   firstCurrencies: { countryName: string, name: string, symbol: string }[] = [];
   batchSize: number = 10;
   startIndex: number = 0;
-
-  nomeUsuario: string = 'Nome do Usuário'; // Substitua pelo nome do usuário logado
-
 
   constructor(private apiService: ApiService, private modalController: ModalController) {
     this.allCountries = this.countries;

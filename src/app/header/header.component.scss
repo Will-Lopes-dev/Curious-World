@@ -1,0 +1,13 @@
+ion-toolbar[header] {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+ion-title.start {
+    margin-left: 0px; /* Ajuste conforme necessário */
+}
+  
+ion-buttons.end {
+margin-right: 8px; /* Ajuste conforme necessário */
+}
