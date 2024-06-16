@@ -23,7 +23,10 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input formControlName="password"  type="password"></ion-input>
+        <ion-input formControlName="password"  type="password" [type]="passwordType"></ion-input>
+        <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+          <ion-icon [name]="passwordIcon"></ion-icon>
+        </ion-button>
       </ion-item>
       <div *ngIf="this.loginForm.controls['password']?.touched && this.loginForm.controls['password']?.invalid">
         <ion-text *ngIf="errorControl['password'].errors?.['required']">
@@ -34,16 +37,15 @@
         </ion-text>
       </div>
     </div>
+    <ion-button expand="full" (click)="login()">Login</ion-button>
+  </form>
 
     <div class="ion-padding">
-      <p>Esqueceu sua senha?</p> <a href="" [routerLink]="['/reset-password']">Cadastrar</a>
+      <p>Esqueceu sua senha?</p> <a href="" [routerLink]="['/reset-password']">Redefinir senha</a>
      </div>
 
     <div class="ion-padding">
       <p>Ainda não é membro?</p> <a href="" [routerLink]="['/signup']">Cadastrar</a>
      </div>
-
-    <ion-button expand="full" (click)="login()">Login</ion-button>
-  </form>
     
 </ion-content>

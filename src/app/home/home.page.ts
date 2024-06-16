@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../service/api.service';
-import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { CountryModalPage } from '../country-modal/country-modal.page';
-
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,25 +10,22 @@ import { CountryModalPage } from '../country-modal/country-modal.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  countries: any[] = [];
   allCountries: any[] = [];
-  firstCurrencies: { countryName: string, name: string, symbol: string }[] = [];
+  countriesPerPage: any[] = [];
+  countries: any[] = [];
   batchSize: number = 10;
   startIndex: number = 0;
 
-  constructor(private apiService: ApiService, private modalController: ModalController) {
-    this.allCountries = this.countries;
-  }
+  constructor(private apiService: ApiService, private modalController: ModalController, public authService: AuthService) {}
 
   ngOnInit() {
-    this.loadCountries();
+    this.loadAllCountries();
   }
 
-
-
-  loadCountries() {
-    this.apiService.getCountries(this.batchSize, this.startIndex).subscribe({
+  loadAllCountries() {
+    this.apiService.getCountries().subscribe({
       next: (data: any[]) => {
+        this.allCountries = data;
         if (data.length > 0) {
           data.forEach(country => {
             if (country.currencies) {
@@ -37,10 +34,8 @@ export class HomePage {
               country.firstCurrency = firstCurrency;
             }
           });
-          this.allCountries = data;
-          this.countries = this.allCountries;
-          this.startIndex += this.batchSize; 
         }
+        this.loadMoreCountries();
       },
       error: (error: any) => {
         console.error("Erro ao carregar países", error);
@@ -48,20 +43,29 @@ export class HomePage {
     });
   }
 
+  loadMoreCountries() {
+    const endIndex = this.startIndex + this.batchSize;
+    const newCountries = this.allCountries.slice(this.startIndex, endIndex);
+    this.countries.push(...newCountries);
+    this.startIndex = endIndex;
+  }
+
   filterCountries(event: any) {
     const searchTerm = event.target.value.toLowerCase().trim();
-    this.countries = []
-  
     if (searchTerm) {
       this.countries = this.allCountries.filter(country => {
         return country.translations.por.common.toLowerCase().startsWith(searchTerm);
       });
     } else {
-      this.countries = [];
-      this.countries = this.allCountries;
+      this.resetPagination();
     }
   }
-  
+
+  resetPagination() {
+    this.startIndex = 0;
+    this.countries = this.allCountries.slice(0, this.batchSize);
+  }
+
   onScroll(event: any) {
     const scrollElement = event.target;
     const scrollHeight = scrollElement.scrollHeight;
@@ -69,7 +73,7 @@ export class HomePage {
     const clientHeight = scrollElement.clientHeight;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      this.loadCountries();
+      this.loadMoreCountries();
     }
   }
 
@@ -81,11 +85,8 @@ export class HomePage {
         firstCurrencyName: country.firstCurrencyName,
         firstCurrencySymbol: country.firstCurrencySymbol,
         maps: country.maps // Supondo que 'maps' é o nome da propriedade em 'country' que contém os links do mapa
-
       }
     });
     return await modal.present();
   }
-
-
 }

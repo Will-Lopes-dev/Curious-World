@@ -14,6 +14,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isAuthenticated: boolean = false;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
 
   constructor(
     public formBuilder: FormBuilder,
@@ -45,7 +47,7 @@ export class LoginPage implements OnInit {
       ]],
       password: ['',[
         Validators.required,
-        Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
+        Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
       ]]
     })
   }
@@ -56,22 +58,24 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-   const loading = await this.loadingCtrl.create({
-    message: 'Carregando...',
-   });
-   await loading.present();
+  //  const loading = await this.loadingCtrl.create({
+  //   message: 'Carregando...',
+  //  });
+  //  await loading.present();
    if (this.loginForm?.valid) {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
-    const user: any = await this.authService.login(email, password, this.isAuthenticated)
-      .catch((error)=> {
-        console.log(error);
-        loading.dismiss();
-      })
-    if (user) {
-      loading.dismiss()
-      this.router.navigate(['/login']);
-    }
+    await this.authService.login(email, password, this.isAuthenticated)
+
+    // const user: any = await this.authService.login(email, password, this.isAuthenticated)
+    //   .catch((error)=> {
+    //     console.log(error);
+    //     loading.dismiss();
+    //   })
+    // if (user) {
+    //   // loading.dismiss()
+    //   // this.router.navigate(['/login']);
+    // }
    }
   }
 
@@ -87,4 +91,14 @@ export class LoginPage implements OnInit {
 //     }
 //   }
 // }
+togglePasswordVisibility() {
+  if (this.passwordType === 'password') {
+    this.passwordType = 'text';
+    this.passwordIcon = 'eye';
+  } else {
+    this.passwordType = 'password';
+    this.passwordIcon = 'eye-off';
+  }
+}
+
 }

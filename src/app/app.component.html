@@ -1,44 +1,23 @@
 <ion-app>
+  <ion-buttons slot="start">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
   <ion-split-pane contentId="main-content">
-    <!-- Menu -->
-    <ion-menu contentId="main-content">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
+    <ion-menu contentId="main-content" type="overlay" class="menu-custom-style">
       <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false">
-            <ion-item routerLink="/home" routerDirection="root">
-              <ion-icon slot="start" name="home-outline"></ion-icon>
-              <ion-label>Home</ion-label>
-            </ion-item>
-            <ion-item routerLink="/initial" routerDirection="root">
-              <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-              <ion-label>Initial</ion-label>
-            </ion-item>
-            <ion-item routerLink="/login" routerDirection="root">
-              <ion-icon slot="start" name="log-in-outline"></ion-icon>
-              <ion-label>Login</ion-label>
-            </ion-item>
-            <ion-item routerLink="/signup" routerDirection="root">
-              <ion-icon slot="start" name="log-out-outline"></ion-icon>
-              <ion-label>Signup</ion-label>
-            </ion-item>
-            <ion-item (click)="logout()" routerDirection="root">
-              <ion-icon slot="start" name="log-out-outline"></ion-icon>
-              <ion-label>Logout</ion-label>
-            </ion-item>
-            <ion-item routerLink="/reset-password" routerDirection="root">
-              <ion-icon slot="start" name="log-out-outline"></ion-icon>
-              <ion-label>redefinir senha</ion-label>
+        <ion-list id="inbox-list">
+          <ion-list-header>Menu</ion-list-header>
+
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index;">
+            <ion-item (click)="handleMenuClick(p)" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>
-
+  
     <!-- Conteúdo principal -->
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

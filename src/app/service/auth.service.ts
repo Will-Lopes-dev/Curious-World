@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { firstValueFrom } from 'rxjs';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+  userData: any= {};
+
   constructor(
     private auth: AngularFireAuth,
-    // private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore,
     private toastController: ToastController,
     private loadingController: LoadingController,
-    private router: Router 
+    private router: Router,
   ) {}
 
   async login(email: string, password: string, isAuthenticated: boolean) {
@@ -45,7 +49,32 @@ export class AuthService {
   }
 
   async getProfile() {
-    return await this.auth.currentUser
+    return new Promise<firebase.default.User | null> ((resolve, reject)=>{
+      this.auth.onAuthStateChanged(user => {
+        if(user) {
+          resolve(user);
+        } else {
+          resolve(null);
+        }
+      }, reject)
+    })
+    
+    // try {
+    //   const docRef = this.firestore
+    //   .collection('users')
+    //   .doc(uid)
+    //   .get();
+    //   const doc = await firstValueFrom(docRef);
+    //   if (doc.exists) {
+    //     const data: any =  doc.data();
+    //     return data.name || null;
+    //   } else {
+    //     return null; // Retorna null se o documento não existir
+    //   }
+    // } catch (error) {
+    //   console.error('Error getting user profile:', error);
+    //   throw error; // Lança o erro para que possa ser tratado pelo chamador
+    // }
   }
 
   async register(email: string, password: string) {
@@ -55,15 +84,17 @@ export class AuthService {
     await loading.present();
 
     try {
-      await this.auth.createUserWithEmailAndPassword(email, password);
-      await loading.dismiss();
+      const user = await this.auth.createUserWithEmailAndPassword(email, password);
+      loading.dismiss();
       this.showToast("Conta criada com sucesso!");
       this.router.navigate(['/login']);
-  } catch (error) {
-    await loading.dismiss();
-    console.log(error);
-    this.showToast('ERRO AO SE REGISTRAR');
-    throw error;  // Lance o erro para que ele possa ser tratado no componente
+      await this.firestore.collection('Users').doc(user.user?.uid).set(this.userData);
+      return user;
+    } catch (error) {
+      loading.dismiss();
+      console.log(error);
+      this.showToast('ERRO AO SE REGISTRAR');
+      throw error;
   }
 }
 

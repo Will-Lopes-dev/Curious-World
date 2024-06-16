@@ -11,7 +11,7 @@ export class ApiService {
 
   constructor(private https: HttpClient) { }
 
-  getCountries(batchSize: number, startIndex: number): Observable<any[]> {
+  getCountries(batchSize?: number, startIndex?: number): Observable<any[]> {
     const api = `${this.url}?limit=${batchSize}&offset=${startIndex}`
     return this.https.get<any[]>(api);
   }

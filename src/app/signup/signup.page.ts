@@ -12,6 +12,8 @@ import { LoadingController } from '@ionic/angular';
 })
 export class SignupPage implements OnInit{
   regForm: FormGroup;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
 
   constructor(
     public formBuilder: FormBuilder,
@@ -45,7 +47,7 @@ ngOnInit() {
     ]],
     password: ['',[
       Validators.required,
-      Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")
+      Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
     ]]
   })
 }
@@ -58,17 +60,17 @@ ngOnInit() {
    const loading = await this.loadingCtrl.create({
     message: 'Carregando...',
    });
-   await loading.present();
+  //  await loading.present();
    if (this.regForm?.valid) {
     const email = this.regForm.get('email')?.value;
     const password = this.regForm.get('password')?.value;
     const user: any = await this.authService.register(email, password)
       .catch((error)=> {
+        // loading.dismiss();
         console.log(error);
-        loading.dismiss();
       })
     if (user) {
-      loading.dismiss()
+      // loading.dismiss()
       this.router.navigate(['/login']);
     }
    }
@@ -85,4 +87,14 @@ ngOnInit() {
   //       console.error('Registration error', error);
   //     });
   // }
+
+  togglePasswordVisibility() {
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';
+      this.passwordIcon = 'eye';
+    } else {
+      this.passwordType = 'password';
+      this.passwordIcon = 'eye-off';
+    }
+  }
 }

@@ -34,22 +34,30 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input formControlName="password" type="password"></ion-input>
+        <ion-input formControlName="password" type="password" [type]="passwordType"></ion-input>
+        <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+          <ion-icon [name]="passwordIcon"></ion-icon>
+        </ion-button>
       </ion-item>
       <div *ngIf="this.regForm.controls['password']?.touched && this.regForm.controls['password']?.invalid">
         <ion-text *ngIf="errorControl['password'].errors?.['required']">
           É necessário preencher campo senha!
         </ion-text>
         <ion-text *ngIf="errorControl['password'].errors?.['pattern']">
-          Deve conter pelo menos um número e uma letra maiúscula e minúscula e pelo menos 8 ou mais caracteres.
+          Deve conter:
+          pelo menos 1 letra maiúscula,
+          pelo menos 1 letra minúscula,
+          pelo menos 1 um número de 0 a 9,
+          pelo menos 1 caracter especial e
+          Mínimo 8 caracteres.
         </ion-text>
       </div>
     </div>
-    <!-- <ion-list></ion-list> -->
-     <div class="ion-padding">
-      <p>Já é um membro?</p> <a href="" [routerLink]="['/login']">Efetuar Login</a>
-     </div>
 
     <ion-button expand="full" (click)="register()">Register</ion-button>
   </form>
+  <div class="ion-padding">
+    <p>Já é um membro?</p> <a href="" [routerLink]="['/login']">Efetuar Login</a>
+  </div>
+
 </ion-content>

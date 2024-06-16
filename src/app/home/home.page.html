@@ -4,7 +4,7 @@
     <ion-searchbar placeholder="Pesquisar País" (ionInput)="filterCountries($event)"></ion-searchbar>
   </ion-toolbar>
 
-<ion-content (ionScroll)="onScroll($event)">
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col>
