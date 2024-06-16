@@ -3,6 +3,8 @@ import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signO
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FirebaseError } from 'firebase/app';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +27,25 @@ export class AuthService {
 
     try {
       const user = await this.auth.signInWithEmailAndPassword(email, password);
-      await loading.dismiss();
+      loading.dismiss();
       isAuthenticated = true;
       this.showToast('CONECTADOS COM SUCESSO');
-      return user;
+      user;
+      this.router.navigate(['/home']);
     } catch (error) {
-      await loading.dismiss();
+      loading.dismiss();
+      console.log(error)
       this.showToast('ERRO AO EFETUAR LOGIN');
       throw error;  // Lance o erro para que ele possa ser tratado no componente
     }
+  }
+
+  async resetPassword(email: string) {
+    return await this.auth.sendPasswordResetEmail(email);
+  }
+
+  async getProfile() {
+    return await this.auth.currentUser
   }
 
   async register(email: string, password: string) {
@@ -43,10 +55,13 @@ export class AuthService {
     await loading.present();
 
     try {
-      this.auth.createUserWithEmailAndPassword(email, password);
+      await this.auth.createUserWithEmailAndPassword(email, password);
       await loading.dismiss();
+      this.showToast("Conta criada com sucesso!");
+      this.router.navigate(['/login']);
   } catch (error) {
     await loading.dismiss();
+    console.log(error);
     this.showToast('ERRO AO SE REGISTRAR');
     throw error;  // Lance o erro para que ele possa ser tratado no componente
   }
