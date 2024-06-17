@@ -20,6 +20,7 @@ export class AppComponent implements OnInit  {
     // { title: 'Login', url: '/login', icon: 'log-in' },
     { title: 'Registrar', url: '/signup', icon: 'heart' },
     { title: 'Redefinir Senha', url: '/reset-password', icon: 'refresh-circle' },
+    { title: 'Sobre', url: '/initial', icon: 'book' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   public user: firebase.default.User | null = null; // Usuário atualmente autenticado
